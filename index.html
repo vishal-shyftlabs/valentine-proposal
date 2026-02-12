@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Valentine?</title>
+  <style>
+    /* ---------- BODY & SECTIONS ---------- */
+    body {
+      margin: 0;
+      font-family: "Comic Sans MS", cursive, sans-serif;
+      background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+      overflow-x: hidden;
+      scroll-behavior: smooth;
+    }
+    section {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+      box-sizing: border-box;
+    }
+
+    /* ---------- CARD STYLING ---------- */
+    .card {
+      background: white;
+      padding: 40px;
+      border-radius: 20px;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      max-width: 420px;
+    }
+
+    h1, h2 {
+  color: #ff4d6d;
+  margin-bottom: 20px;
+  font-size: 2.2rem;
+  letter-spacing: 1px;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+}
+
+    /* ---------- BUTTONS ---------- */
+    .buttons {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      margin-top: 20px;
+    }
+    button {
+      font-size: 18px;
+      padding: 12px 24px;
+      border-radius: 30px;
+      border: none;
+      cursor: pointer;
+    }
+    #yesBtn { background: #ff4d6d; color: white; }
+    #noBtn { background: #ccc; color: #333; }
+    #noBtnClone {
+      position: fixed;
+      background: #ccc;
+      color: #333;
+      transition: left 0.15s ease, top 0.15s ease;
+      z-index: 3;
+    }
+
+    /* ---------- HINT ---------- */
+    .hint {
+      margin-top: 12px;
+      font-size: 14px;
+      color: #ff6f91;
+      opacity: 0.8;
+      font-style: italic;
+    }
+
+    /* ---------- MEME PHOTO ---------- */
+    .meme {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .meme img {
+      width: 300px;
+      border-radius: 15px;
+    }
+
+    /* ---------- ENVELOPES ---------- */
+    #loveSection { display: none; }
+    .envelope-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 40px;
+      justify-items: center;
+      margin-top: 30px;
+    }
+    .envelope {
+      position: relative;
+      width: 220px;
+      height: 150px;
+      background: #ff6f91;
+      border-radius: 8px;
+      cursor: pointer;
+      overflow: hidden;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+      transition: transform 0.2s ease;
+    }
+    .envelope:hover { transform: translateY(-5px); }
+    .envelope::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 0;
+      height: 0;
+      border-left: 110px solid transparent;
+      border-right: 110px solid transparent;
+      border-top: 75px solid #ff4d6d;
+      transform-origin: top;
+      transition: transform 0.6s ease;
+      z-index: 3;
+    }
+    .note {
+      position: absolute;
+      bottom: -120px;
+      left: 10px;
+      width: 200px;
+      height: 120px;
+      background: white;
+      border-radius: 6px;
+      padding: 15px;
+      box-sizing: border-box;
+      text-align: center;
+      color: #ff4d6d;
+      font-size: 16px;
+      transition: bottom 0.6s ease;
+      z-index: 2;
+    }
+    .envelope.open::before { transform: rotateX(180deg); }
+    .envelope.open .note { bottom: 10px; }
+
+    /* ---------- CANVAS ---------- */
+    canvas { position: fixed; top:0; left:0; pointer-events:none; z-index:1; }
+
+    section {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  box-sizing: border-box;
+  scroll-snap-align: start; /* optional smooth scroll feel */
+}
+
+#questionSection {
+  background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+}
+
+#meme {
+  background: linear-gradient(135deg, #ff85a1, #ffb3a7);
+}
+
+#loveSection {
+  background: linear-gradient(135deg, #ffe0e5, #ffc3d6);
+}
+
+/* Heading Styles */
+h1, h2 {
+  font-size: 2.8rem;
+  text-align: center;
+  margin-bottom: 30px;
+  color: white;
+  text-shadow: 2px 2px 8px rgba(0,0,0,0.4);
+}
+body {
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+}
+.main-heading {
+  color: #ff4d6d;
+  margin-bottom: 20px;
+  font-size: 2.2rem;
+  letter-spacing: 1px;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+}
+  </style>
+</head>
+<body>
+
+<canvas id="confetti"></canvas>
+
+<!-- SECTION 1: QUESTION -->
+<section id="questionSection">
+  <div class="card">
+    <h1 class="main-heading">Will you be my Valentine? 💖</h1>
+    <div class="buttons">
+      <button id="yesBtn">Yes 💘</button>
+      <button id="noBtn">No 🙄</button>
+    </div>
+    <div class="hint">psst… the No button is a bit shy 🙈</div>
+  </div>
+</section>
+
+<!-- SECTION 2: MEME / PHOTO -->
+<section class="meme" id="meme">
+  <h2>OMAIGOTTTT! You're stuck with me now 😈💖</h2>
+  <img src="her.jpeg" />
+</section>
+
+<!-- SECTION 3: ENVELOPES -->
+<section id="loveSection">
+  <h2>Things I like about you 💕</h2>
+  <div class="envelope-grid">
+    <div class="envelope"><div class="note">The little kid that I get to see everyday.  💖</div></div>
+    <div class="envelope"><div class="note">The warmth you bring. It makes being around you feel good. 🥺</div></div>
+    <div class="envelope"><div class="note">How you share the little details of your day. 😌</div></div>
+    <div class="envelope"><div class="note">And of course, the steamy sessions.  🫦</div></div>
+  </div>
+</section>
+
+<script>
+  const yesBtn = document.getElementById("yesBtn");
+  const noBtn = document.getElementById("noBtn");
+  const meme = document.getElementById("meme");
+  const loveSection = document.getElementById("loveSection");
+  const hint = document.querySelector(".hint");
+
+  /* ---------- NO BUTTON CLONE (Shy Button) ---------- */
+  const rect = noBtn.getBoundingClientRect();
+  const clone = noBtn.cloneNode(true);
+  clone.id = "noBtnClone";
+  clone.style.left = rect.left + "px";
+  clone.style.top = rect.top + "px";
+  document.body.appendChild(clone);
+  noBtn.style.visibility = "hidden";
+
+  clone.addEventListener("mouseover", () => {
+    const padding = 30;
+    const maxX = window.innerWidth - clone.offsetWidth - padding;
+    const maxY = window.innerHeight - clone.offsetHeight - padding;
+    clone.style.left = Math.random() * maxX + padding + "px";
+    clone.style.top = Math.random() * maxY + padding + "px";
+  });
+
+  /* ---------- HEART CONFETTI ---------- */
+  const canvas = document.getElementById("confetti");
+  const ctx = canvas.getContext("2d");
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+
+  let hearts = [];
+
+  function createHearts() {
+    hearts = [];
+    for (let i = 0; i < 150; i++) {
+      hearts.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height - canvas.height,
+        size: Math.random() * 8 + 10,
+        speed: Math.random() * 2 + 1,
+        drift: Math.random() * 2 - 1,
+        color: ["#ff4d6d", "#ff85a1", "#ff6f91"][Math.floor(Math.random() * 3)]
+      });
+    }
+  }
+
+  function drawHeart(x, y, size, color) {
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.scale(size / 20, size / 20);
+    ctx.beginPath();
+    ctx.moveTo(0, 0);
+    ctx.bezierCurveTo(-10, -10, -20, 5, 0, 20);
+    ctx.bezierCurveTo(20, 5, 10, -10, 0, 0);
+    ctx.fillStyle = color;
+    ctx.fill();
+    ctx.restore();
+  }
+
+  function animateHearts() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    hearts.forEach(h => {
+      drawHeart(h.x, h.y, h.size, h.color);
+      h.y += h.speed;
+      h.x += h.drift;
+      if (h.y > canvas.height + 20) {
+        h.y = -20;
+        h.x = Math.random() * canvas.width;
+      }
+    });
+    requestAnimationFrame(animateHearts);
+  }
+
+  /* ---------- YES BUTTON CLICK ---------- */
+  yesBtn.addEventListener("click", () => {
+  yesBtn.style.display = "none";
+  clone.style.display = "none";
+  hint.style.display = "none";
+
+  meme.style.display = "flex";
+  loveSection.style.display = "flex";
+
+  // Change background to a romantic gradient
+  document.body.style.background = "linear-gradient(135deg, #ffafbd, #ffc3a0, #ff85a1)";
+
+  createHearts();
+  animateHearts();
+
+  meme.scrollIntoView({ behavior: "smooth" });
+});
+
+  /* ---------- ENVELOPES CLICK ---------- */
+  const envelopes = document.querySelectorAll(".envelope");
+  envelopes.forEach(env => {
+    env.addEventListener("click", () => env.classList.toggle("open"));
+  });
+
+  /* ---------- RESIZE CANVAS ---------- */
+  window.addEventListener("resize", () => {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  });
+</script>
+
+</body>
+</html>
